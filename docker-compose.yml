@@ -1,0 +1,7 @@
+apache:
+  build: ./
+  volumes:
+    - ./src:/var/www/html
+  environment:
+    VIRTUAL_HOST: agrararchiv.dev
+
