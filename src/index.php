@@ -38,7 +38,7 @@ $sitemapUrl = "/sitemap.xml$/";
 
 
 // read full url
-$url = parse_url('http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . "{$_SERVER['HTTP_HOST']}.{$_SERVER['REQUEST_URI']}");
+$url = parse_url('http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . "{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}");
 // generate base url
 $baseurl = $url['scheme']."://".$url['host'].substr( $url['path'], 0,  strrpos( $url['path'], '/'));
 // open current directory
