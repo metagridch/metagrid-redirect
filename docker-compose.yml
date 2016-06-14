@@ -1,7 +1,7 @@
 apache:
   build: ./
+  ports:
+    - 80:80
   volumes:
     - ./src:/var/www/html
-  environment:
-    VIRTUAL_HOST: agrararchiv.dev
 
