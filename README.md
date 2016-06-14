@@ -20,6 +20,18 @@ docker-compose up -d
 
 Open your browser and connect to http://localhost:80/1221.html. You should get redirected to the corresponding file (test-tester(1980-2010)_1221.html).
 
+Requirements
+-----
+The scripts works together with most LAMP Systems. You need:
+ * Apache
+ * php
+ * mode_rewrite
+
+To enable mod_rewrite just run
+```bash
+a2enmod rewrite
+```
+
 Usage
 -----
 Place the script (under src/) in the folder with the static html content and configure it.
