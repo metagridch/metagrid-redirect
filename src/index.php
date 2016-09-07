@@ -45,19 +45,21 @@ $baseurl = $url['scheme']."://".$url['host'].substr( $url['path'], 0,  strrpos( 
 $fp = opendir("./");
 // try to find html site
 if(preg_match($pattern,$url['path'],$matches)){
-    $id = $matches[1];
+    $urlId = $matches[1];
     while($file = readdir($fp)){
-        $knewPattern = str_replace($identifier, $id, $pattern);
-        if(is_file($file) && preg_match($knewPattern, $file)){
-            if($doRedirect){
-                header("HTTP/1.1 302 Moved Temporarily");
-                header("Location:$baseurl/$file");
+        $knewPattern = str_replace($identifier, $urlId, $pattern);
+        // get id of the file and check if its the same in the url
+        if(preg_match($pattern, $file, $fileId)) {
+            if (is_file($file) && preg_match($knewPattern, $file) && ($urlId == $fileId[1])) {
+                if ($doRedirect) {
+                    header("HTTP/1.1 302 Moved Temporarily");
+                    header("Location:$baseurl/$file");
+                } else {
+                    // return 200 and the html code. Don't do redirect
+                    echo readfile($file);
+                }
+                exit;
             }
-            else {
-                // return 200 and the html code. Don't do redirect
-                echo readfile($file);
-            }
-            exit;
         }
     }
 }
