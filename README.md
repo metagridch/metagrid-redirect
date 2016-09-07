@@ -61,6 +61,19 @@ The url of the sitemap. Be aware of conflicts with google sitemaps
 $sitemapUrl = "/sitemap.xml$/";
 ```
 
+If the script is placed in a subdirectory of the domain you need to adjust the .htaccess file. If your script is placed in a folder http://example.org/folder/ the you need to change the htacces like this.
+```
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteRule ^index\.php$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    # adjust to your folderstructure
+    RewriteRule . /test/index.php [L]
+</IfModule>
+```
+
 Planned features
 -----
 The script is very basic and perhabs will handle more complex situations in the future.
