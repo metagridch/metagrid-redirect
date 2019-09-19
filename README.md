@@ -1,24 +1,19 @@
-This is a small script to redirect request from the metagrid crawler to a static html file.
+# Metagrid Redirect
+This is a small script to redirect request from the metagrid crawler to a static html file. This may be helpful in the case you have a dump of static html files from a internal system with seo optimized filenames.
 
-Metagrid Redirect Features
-======
+__Features:__
 - Generate temporary redirects (302) for requests from the metagrid crawler
 - Generate a XML sitemap for the metagrid crawler
 
 Test
 ------------
-The easiest way to test metagrid-redirect is with [git](http://git.org/).
-```bash
-git clone git@source.dodis.ch:metagrid/metagrid-redirect.git
-```
-
-Use [docker](http://www.docker.com) to run the test
+There are some unittests, but you can simply start a docker container and test the script in the browser.
 ```bash
 docker-compose build
-docker-compose up -d
+docker-compose up 
 ```
 
-Open your browser and connect to http://localhost:80/1221.html. You should get redirected to the corresponding file (test-tester(1980-2010)_1221.html).
+Open your browser and connect to `http://localhost/example/1221.html`. You should get redirected to the corresponding file (test-tester(1980-2010)_1221.html).
 
 Requirements
 -----
@@ -34,34 +29,49 @@ a2enmod rewrite
 
 Usage
 -----
-Place the script (under src/) in the folder with the static html content and configure it.
-
+Install the script with composer or checkout the repository. Then you can use it like the following example
+```php
+use Metagrid\Redirect;
+$redirecter = new Redirect(__DIR__);
+$redirecter->handleRequest($_SERVER);
+```
 Configuration
 ----
 You can define some parameters to configure the script.
 
 Define a regex expression for your unique identifier. In this example a number of undefined length
 ```php
-$identifier = "(\d)";
+$identifier = "(\d+)";
+$redirecter = new Redirect(__DIR__, $identifier);
 ```
-Define a regex expression to identify your resources. You need to use the identifier in this expression. In this example all url's that end with a number and .html
+Define a regex expression to identify your resources. You need to use the identifier in this expression. In this example all urls that end with a number and .html
 ```php
-$pattern = "/".$identifier.".html$/";
+$pattern = "/(\d+).)html$/";
+$identifier = "(\d+)";
+$redirecter = new Redirect(__DIR__, $identifier, $pattern);
+
 ```
 Define if the script should do a redirect (302) or print the resource and answer with 200. Redirect is recommended
 ```php
-$doRedirect = true;
+$redirecter = new Redirect(__DIR__);
+// echo the content of the file
+$redirecter->setDoRedirect(false);
 ```
 Should the script generate a sitemap for metagrid and other crawlers
 ```php
-$doSitemap = true;
+$redirecter = new Redirect(__DIR__);
+// hide sitemap
+$redirecter->setDoSitemap(false);
 ```
 The url of the sitemap. Be aware of conflicts with google sitemaps
 ```php
-$sitemapUrl = "/sitemap.xml$/";
+$pattern = "/(\d+).)html$/";
+$identifier = "(\d+)";
+$sitemapUrl = "/sitemap_de.xml$/";
+$redirecter = new Redirect(__DIR__, $identifier, $pattern,$sitemapUrl);
 ```
 
-If the script is placed in a subdirectory of the domain you need to adjust the .htaccess file. If your script is placed in a folder http://example.org/folder/ the you need to change the htacces like this.
+If the script is placed in a subdirectory of the domain you need to adjust the .htaccess file. If your script is placed in a folder http://example.org/folder/ then you need to change the htaccess like this.
 ```
 <IfModule mod_rewrite.c>
     RewriteEngine On
@@ -73,9 +83,3 @@ If the script is placed in a subdirectory of the domain you need to adjust the .
     RewriteRule . /test/index.php [L]
 </IfModule>
 ```
-
-Planned features
------
-The script is very basic and perhabs will handle more complex situations in the future.
-* A small cache to enhance performance.
-* build a router class to abstract some businesslogic

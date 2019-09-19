@@ -1,0 +1,22 @@
+{
+    "name": "metagridch/metagrid-redirect",
+    "description": "Redirect requests form the metagrid crawler to a stytic html file",
+    "require-dev": {
+        "phpunit/phpunit": "^8.3",
+        "mikey179/vfsstream": "^1.6"
+    },
+    "authors": [
+        {
+            "name": "tobinski",
+            "email": "tobinski@dodis.ch"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Metagrid\\": "src/",
+            "Metagrid\\Test\\": "test/"
+        }
+    }
+
+}
