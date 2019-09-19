@@ -6,6 +6,6 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     # adjust to your folderstructure
-    RewriteRule . /index.php [L]
+    RewriteRule . /example/index.php [L]
 </IfModule>
 # end metagrid
